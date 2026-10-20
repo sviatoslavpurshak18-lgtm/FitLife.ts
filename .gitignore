@@ -1,0 +1,24 @@
+# Залежності (ігнорує node_modules всюди, в т.ч. в cms і frontend)
+node_modules/
+**/node_modules/
+node_modules.cms/
+
+# Збірки та тимчасові файли
+.next/
+dist/
+build/
+.vercel/
+
+# Змінні оточення (секрети)
+.env
+.env.*
+!.env.example
+
+# Логи
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Системні файли
+.DS_Store
+Thumbs.db

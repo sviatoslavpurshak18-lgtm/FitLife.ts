@@ -167,7 +167,7 @@ function renderSite(common, page) {
 
   app.innerHTML = `
     ${renderHeader(common.header)}
-    <main id="top">${renderBlocks(page.blocks)}</main>
+    <main id="top">${renderBlocks(page.blocks || [])}</main>
     ${renderFooter(common.footer)}`
 
   bindEvents()
@@ -188,11 +188,19 @@ async function init() {
 
   try {
     const path = window.location.pathname || '/'
-    const [common, page] = await Promise.all([fetchCommon(), fetchPage(path)])
+    
+    const [commonRes, pageRes] = await Promise.allSettled([
+      fetchCommon(),
+      fetchPage(path)
+    ])
+
+    const common = commonRes.status === 'fulfilled' && commonRes.value ? commonRes.value : null
+    const page = pageRes.status === 'fulfilled' && pageRes.value ? pageRes.value : null
+
     renderSite(common, page)
   } catch (err) {
-    console.error(err)
-    showError('Не вдалося завантажити сторінку. Перевірте з’єднання з CMS.')
+    console.warn('Не вдалося зʼєднатися з CMS, завантажуємо демо-дані для захисту:', err)
+    renderSite(DEMO_COMMON, DEMO_PAGE)
   }
 }
 

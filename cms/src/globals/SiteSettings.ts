@@ -3,7 +3,10 @@ import type { GlobalConfig } from 'payload'
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Налаштування сайту',
-  access: { read: () => true },
+  access: {
+  read: () => true,
+  update: () => true, 
+},
   fields: [
     {
       name: 'header',
